@@ -16,6 +16,15 @@
             android:name=".ActivityOne"
             android:exported="false" />
         <activity
+            android:name=".ActivityFour"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityThree"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityTwo"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
