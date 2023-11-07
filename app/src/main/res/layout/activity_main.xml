@@ -50,4 +50,16 @@
         android:layout_marginTop="70dp"
         android:text="Favourites"
         android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/About"
+        android:layout_width="218dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ActivityFour"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:text="About"
+        android:textColor="#FFFFFF" />
+
 </RelativeLayout>
