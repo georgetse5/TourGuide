@@ -2,34 +2,123 @@ package com.example.tourguide;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
-public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
-    private GoogleMap MyMap;
+public class ActivityOne extends AppCompatActivity {
+
+    SupportMapFragment supportMapFragment;
+    FusedLocationProviderClient fusedClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        fusedClient = (FusedLocationProviderClient) LocationServices
+                .getFusedLocationProviderClient(this);
+
+        Dexter.withContext(getApplicationContext())
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        getCurrentLocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
     }
 
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        MyMap = googleMap;
+    public void getCurrentLocation() {
 
-        LatLng sydney = new LatLng(41.0745235750874, 23.553951511475475);
-        MyMap.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Serres"));
-        MyMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Task<Location> task = fusedClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(@NonNull GoogleMap myMap) {
+                        if (location != null) {
+                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here");
+                            myMap.addMarker(markerOptions);
+                            myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        } else {
+                            Toast.makeText(ActivityOne.this, "Please grant location Permission", Toast.LENGTH_SHORT).show();
+                        }
+                        
+                        pinLocations(myMap);
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void pinLocations(@NonNull GoogleMap map) {
+
+        LatLng test1 = new LatLng(41.074712, 23.553938);
+        MarkerOptions markerOptions = new MarkerOptions().position(test1).title("TEI");
+        map.addMarker(markerOptions);
+
+        LatLng test2 = new LatLng(41.091117, 23.549866);
+        MarkerOptions markerOptions1 = new MarkerOptions().position(test2).title("Center");
+        map.addMarker(markerOptions1);
+
+        LatLng test3 = new LatLng(41.09093836950161, 23.549360012910867);
+        MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni");
+        map.addMarker(markerOptions2);
 
     }
+
 }

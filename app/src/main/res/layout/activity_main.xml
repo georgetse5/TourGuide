@@ -25,7 +25,7 @@
         android:layout_below="@+id/ActivityOne"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="Restaurants"
         android:textColor="#FFFFFF" />
 
@@ -36,7 +36,7 @@
         android:layout_below="@+id/ActivityTwo"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="Sights"
         android:textColor="#FFFFFF" />
 
@@ -47,7 +47,7 @@
         android:layout_below="@+id/ActivityThree"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="Favourites"
         android:textColor="#FFFFFF" />
 
@@ -58,7 +58,7 @@
         android:layout_below="@+id/ActivityFour"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="About"
         android:textColor="#FFFFFF" />
 
