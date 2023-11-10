@@ -93,10 +93,25 @@ public class ActivityOne extends AppCompatActivity {
                             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here");
                             myMap.addMarker(markerOptions);
                             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+                            myMap.getUiSettings().setZoomControlsEnabled(true);
+
                         } else {
                             Toast.makeText(ActivityOne.this, "Please grant location Permission", Toast.LENGTH_SHORT).show();
                         }
-                        
+
+                        if (ActivityCompat.checkSelfPermission(ActivityOne.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityOne.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        myMap.setMyLocationEnabled(true);
+
                         pinLocations(myMap);
 
                     }
