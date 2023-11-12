@@ -1,5 +1,28 @@
 <resources>
     <string name="app_name">TourGuide</string>
-    <string name="API_Key"></string>
+    <string name="API_Key">AIzaSyCAIg5v3IHFF6GnqxMbuivArzw_fDCrsKQ</string>
+    <string name="example">Example</string>
+    <string-array name="example_txt">
+        <item>Example1</item>
+        <item>Example2</item>
+        <item>Example3</item>
+        <item>Example4</item>
+        <item>Example5</item>
+        <item>Example6</item>
+        <item>Example7</item>
+        <item>Example8</item>
+        <item>Example9</item>
+        <item>Example10</item>
+        <item>Example11</item>
+        <item>Example12</item>
+        <item>Example13</item>
+        <item>Example14</item>
+        <item>Example15</item>
+        <item>Example16</item>
+        <item>Example17</item>
+        <item>Example18</item>
+        <item>Example19</item>
+        <item>Example20</item>
+     </string-array>
 
 </resources>

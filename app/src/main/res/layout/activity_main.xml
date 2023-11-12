@@ -52,7 +52,7 @@
         android:textColor="#FFFFFF" />
 
     <Button
-        android:id="@+id/About"
+        android:id="@+id/ActivityFive"
         android:layout_width="218dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ActivityFour"
