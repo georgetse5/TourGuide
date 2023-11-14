@@ -34,6 +34,8 @@ public class ActivityOne extends AppCompatActivity {
 
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient fusedClient;
+    private double lat, lng;
+    GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,9 @@ public class ActivityOne extends AppCompatActivity {
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
+
+//        nearbyLocations(mMap);
+
     }
 
     public void getCurrentLocation() {
@@ -90,14 +95,14 @@ public class ActivityOne extends AppCompatActivity {
                     public void onMapReady(@NonNull GoogleMap myMap) {
                         if (location != null) {
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here");
-                            myMap.addMarker(markerOptions);
+//                            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here");
+//                            myMap.addMarker(markerOptions);
                             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
                             myMap.getUiSettings().setZoomControlsEnabled(true);
 
                         } else {
-                            Toast.makeText(ActivityOne.this, "Please grant location Permission", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityOne.this, "Please open the location", Toast.LENGTH_SHORT).show();
                         }
 
                         if (ActivityCompat.checkSelfPermission(ActivityOne.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActivityOne.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -133,6 +138,25 @@ public class ActivityOne extends AppCompatActivity {
         LatLng test3 = new LatLng(41.09093836950161, 23.549360012910867);
         MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni");
         map.addMarker(markerOptions2);
+
+    }
+
+    private void nearbyLocations(GoogleMap map) {
+        StringBuilder stringBuilder = new StringBuilder
+                ("http://maps.googleapis.com/maps/api/placesnearbysearch/json?");
+        stringBuilder.append("location=" + lat + "," + lng);
+        stringBuilder.append("&radius=500");
+        stringBuilder.append("&type=restaurant");
+        stringBuilder.append("&sensor=true");
+        stringBuilder.append("&key=" + getResources().getString(R.string.API_Key));
+
+        String url = stringBuilder.toString();
+        Object dataFetch[] = new Object[2];
+        dataFetch[0] = map;
+        dataFetch[1] = url;
+
+        FetchData fetchData = new FetchData();
+        fetchData.execute(dataFetch);
 
     }
 
