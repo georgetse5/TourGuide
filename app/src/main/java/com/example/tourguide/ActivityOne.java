@@ -38,6 +38,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -78,6 +79,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
+
+            MyMap.getUiSettings().setZoomControlsEnabled(true);
+
+            pinLocations(googleMap);
         }
 
     }
@@ -131,4 +136,21 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
+
+    private void pinLocations(@NonNull GoogleMap map) {
+
+        LatLng test1 = new LatLng(41.074712, 23.553938);
+        MarkerOptions markerOptions = new MarkerOptions().position(test1).title("TEI");
+        map.addMarker(markerOptions);
+
+        LatLng test2 = new LatLng(41.091117, 23.549866);
+        MarkerOptions markerOptions1 = new MarkerOptions().position(test2).title("Center");
+        map.addMarker(markerOptions1);
+
+        LatLng test3 = new LatLng(41.09093836950161, 23.549360012910867);
+        MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni");
+        map.addMarker(markerOptions2);
+
+    }
+
 }
