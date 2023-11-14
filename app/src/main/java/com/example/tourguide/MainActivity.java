@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         button2 = findViewById(R.id.ActivityTwo);
         button3 = findViewById(R.id.ActivityThree);
         button4 = findViewById(R.id.ActivityFour);
+        button5 = findViewById(R.id.About);
 
 
 
@@ -73,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this, ActivityFour.class);
+                startActivity(intent);
+            }
+        });
+
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, About.class);
                 startActivity(intent);
             }
         });

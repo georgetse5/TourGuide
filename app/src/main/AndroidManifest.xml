@@ -19,6 +19,9 @@
             android:name=".ActivityOne"
             android:exported="false" />
         <activity
+            android:name=".About"
+            android:exported="false" />
+        <activity
             android:name=".ActivityFour"
             android:exported="false" />
         <activity
