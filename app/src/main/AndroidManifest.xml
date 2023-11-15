@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TourGuide"
         tools:targetApi="31">
+        <activity
+            android:name=".ActivityFive"
+            android:exported="false" />
         <activity
             android:name=".ActivityOne"
             android:exported="false" />
@@ -43,8 +47,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_Key" />
-
     </application>
-
 
 </manifest>
