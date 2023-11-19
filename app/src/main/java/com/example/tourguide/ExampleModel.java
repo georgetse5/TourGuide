@@ -17,18 +17,22 @@ public class ExampleModel {
     }
 
     public String getExamplename() {
+
         return examplename;
     }
 
     public String getExampleAbbreviation() {
+
         return exampleAbbreviation;
     }
 
     public String getExampleAbbreviationSmall() {
+
         return exampleAbbreviationSmall;
     }
 
     public int getImage() {
+
         return image;
     }
 }
