@@ -29,8 +29,8 @@ public class ActivityThree extends AppCompatActivity {
 
         Map<String, Object> places = new HashMap<>();
         places.put("name", "Place");
-        places.put("latitude", "41.09114892507394");
-        places.put("longitude", "23.549864919543243");
+        places.put("latitude", 41.09114892507394);
+        places.put("longitude", 23.549864919543243);
         places.put("description", "A test text for the place");
 
         firestore.collection("places").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
