@@ -1,33 +1,21 @@
 package com.example.tourguide;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import java.util.ArrayList;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ActivityThree extends AppCompatActivity {
 
+    ArrayList<String> placesNames = new ArrayList<>();
+    ArrayList<Double> placesLat = new ArrayList<>();
+    ArrayList<Double> placesLong = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference placesRef = db.collection("places");
 
@@ -76,8 +64,18 @@ public class ActivityThree extends AppCompatActivity {
 
                             String name = places.getName();
                             String description = places.getDescription();
+                            double latitude = places.getLatitude();
+                            double longitude = places.getLongitude();
 
-                            data += "Name: " + name + "\nDescription: " + description + "\n\n";
+                            placesNames.add(name);
+                            placesLat.add(latitude);
+                            placesLong.add(longitude);
+
+//                            data += "Name: " + name + "\nDescription: " + description + "\n\n";
+                        }
+
+                        for (int i = 0 ; i < 8 ; i++) {
+                            data += "Name: " + placesNames.get(i) + "\nLatitude: " + placesLat.get(i) + "\nLongitude: " + placesLong.get(i) + "\n\n";
                         }
 
                         System.out.println(data);

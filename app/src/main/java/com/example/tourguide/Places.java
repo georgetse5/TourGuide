@@ -3,21 +3,21 @@ package com.example.tourguide;
 public class Places {
 
     String name, description;
-    double latitude, longtitude;
+    double latitude, longitude;
 
     public Places(){}
 
-    public Places(String name, double latitude, double longtitude) {
+    public Places(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
     }
 
-    public Places(String name, String description, double latitude, double longtitude) {
+    public Places(String name, String description, double latitude, double longitude) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
     }
 
     public String getName() {
@@ -44,11 +44,11 @@ public class Places {
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longtitude) {
+        this.longitude = longtitude;
     }
 }
