@@ -74,7 +74,7 @@ public class ActivityThree extends AppCompatActivity {
 //                            data += "Name: " + name + "\nDescription: " + description + "\n\n";
                         }
 
-                        for (int i = 0 ; i < 8 ; i++) {
+                        for (int i = 0 ; i < placesNames.size() ; i++) {
                             data += "Name: " + placesNames.get(i) + "\nLatitude: " + placesLat.get(i) + "\nLongitude: " + placesLong.get(i) + "\n\n";
                         }
 
