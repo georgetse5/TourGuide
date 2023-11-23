@@ -2,16 +2,21 @@ package com.example.tourguide;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.tourguide.ActivityFour;
 import com.example.tourguide.ActivityOne;
 import com.example.tourguide.ActivityThree;
 import com.example.tourguide.ActivityTwo;
 import com.example.tourguide.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
          }
 
         });
+
 
 
 
