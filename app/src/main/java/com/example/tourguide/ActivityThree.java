@@ -3,6 +3,8 @@ package com.example.tourguide;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -10,6 +12,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivityThree extends AppCompatActivity {
 
@@ -50,11 +56,13 @@ public class ActivityThree extends AppCompatActivity {
 
         TextView viewData = (TextView) findViewById(R.id.text_view_data);
 
+
         placesRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         String data = "";
                         int counter = 0;
+                      
 
                         data += "For testing purposes only\n=========================\n\n";
 
