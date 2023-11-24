@@ -1,13 +1,15 @@
 package com.example.tourguide;
 
 
+
 public class Places
 {
 
     String name, description;
     double latitude, longitude;
 
-
+    public Places() {
+    }
 
     public Places(String name, double latitude, double longitude) {
         this.name = name;
