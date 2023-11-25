@@ -1,21 +1,16 @@
 package com.example.tourguide;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.google.android.gms.tasks.OnFailureListener;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ActivityThree extends AppCompatActivity {
 
@@ -54,7 +49,7 @@ public class ActivityThree extends AppCompatActivity {
 
     public void loadPlaces() {
 
-        TextView viewData = (TextView) findViewById(R.id.text_view_data);
+        //TextView viewData = (TextView) findViewById(R.id.text_view_data);
 
 
         placesRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -89,7 +84,7 @@ public class ActivityThree extends AppCompatActivity {
                         System.out.println(data);
                         System.out.println("Number of records:" + counter);
                         data += "Number of records: " + counter + "\n\n";
-                        viewData.setText(data);
+                        //viewData.setText(data);
 
                         // Ta dedomena emfanizontai kanonika sto System.out.println(data) mesw toy logcat
 
