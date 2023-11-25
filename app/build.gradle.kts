@@ -44,4 +44,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+    implementation ("androidx.cardview:cardview:1.0.0")
+
 }
