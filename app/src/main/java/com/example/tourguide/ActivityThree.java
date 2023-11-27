@@ -19,9 +19,9 @@ import java.util.Map;
 
 public class ActivityThree extends AppCompatActivity {
 
-    ArrayList<String> placesNames = new ArrayList<>();
-    ArrayList<Double> placesLat = new ArrayList<>();
-    ArrayList<Double> placesLong = new ArrayList<>();
+    public ArrayList<String> placesNames = new ArrayList<>();
+    public ArrayList<Double> placesLat = new ArrayList<>();
+    public ArrayList<Double> placesLong = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference placesRef = db.collection("places");
 

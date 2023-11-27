@@ -18,12 +18,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
@@ -31,6 +38,12 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap MyMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
+
+    public ArrayList<String> placesNames = new ArrayList<>();
+    public ArrayList<Double> placesLat = new ArrayList<>();
+    public ArrayList<Double> placesLong = new ArrayList<>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference placesRef = db.collection("places");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,18 +154,49 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     private void pinLocations(@NonNull GoogleMap map) {
 
-        LatLng test1 = new LatLng(41.074712, 23.553938);
-        MarkerOptions markerOptions = new MarkerOptions().position(test1).title("TEI");
-        map.addMarker(markerOptions);
+        placesRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                String data = "";
+                int counter = 0;
 
-        LatLng test2 = new LatLng(41.091117, 23.549866);
-        MarkerOptions markerOptions1 = new MarkerOptions().position(test2).title("Center");
-        map.addMarker(markerOptions1);
 
-        LatLng test3 = new LatLng(41.09093836950161, 23.549360012910867);
-        MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni");
-        map.addMarker(markerOptions2);
+                data += "For testing purposes only\n=========================\n\n";
+
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Places places = documentSnapshot.toObject(Places.class);
+                    counter +=1;
+
+                    String name = places.getName();
+                    String description = places.getDescription();
+                    double latitude = places.getLatitude();
+                    double longitude = places.getLongitude();
+
+                    placesNames.add(name);
+                    placesLat.add(latitude);
+                    placesLong.add(longitude);
+
+//                            data += "Name: " + name + "\nDescription: " + description + "\n\n";
+                }
+
+                for (int i = 0 ; i < placesNames.size() ; i++) {
+                    LatLng test1 = new LatLng(placesLat.get(i), placesLong.get(i));
+                    MarkerOptions markerOptions = new MarkerOptions().position(test1).title(placesNames.get(i));
+                    map.addMarker(markerOptions);
+                }
+
+                System.out.println("Number of records:" + counter);
+
+
+//        LatLng test2 = new LatLng(41.091117, 23.549866);
+//        MarkerOptions markerOptions1 = new MarkerOptions().position(test2).title("Center");
+//        map.addMarker(markerOptions1);
+//
+//        LatLng test3 = new LatLng(41.09093836950161, 23.549360012910867);
+//        MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni");
+//        map.addMarker(markerOptions2);
 
     }
-
+        });
+    }
 }
