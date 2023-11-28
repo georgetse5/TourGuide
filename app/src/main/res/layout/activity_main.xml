@@ -16,27 +16,39 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@tools:sample/avatars" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/beach" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@tools:sample/avatars" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/cafe" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@tools:sample/avatars" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/cave" />
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@tools:sample/avatars" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/lion" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/sunset" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/valley" />
     </ViewFlipper>
 
 
