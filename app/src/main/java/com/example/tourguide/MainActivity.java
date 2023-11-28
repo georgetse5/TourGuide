@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.example.tourguide.ActivityFour;
 import com.example.tourguide.ActivityOne;
 import com.example.tourguide.ActivityThree;
-import com.example.tourguide.ActivityTwo;
+import com.example.tourguide.ActivityFour;
 import com.example.tourguide.R;
 
 public class MainActivity extends AppCompatActivity {
