@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <layer-list>
+        <item android:drawable="@drawable/beach.jpg" />
         <item>
             <shape>
                 <gradient>
-                    android:startColor="#FFFFFF"   <!-- Transparent white -->
+                    android:startColor="#00FFFFFF"   <!-- Transparent white -->
                     android:endColor="#FFFFFFFF"     <!-- Solid white -->
                     android:angle="90"             <!-- Gradient direction (adjust as needed) -->
-            </gradient>
-        </shape>
-    </item>
+                </gradient>
+            </shape>
+        </item>
     </layer-list>
 </selector>

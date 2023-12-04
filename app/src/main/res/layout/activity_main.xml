@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:autoStart="true"
-        android:background="@drawable/white_tinted_background"
         android:fadingEdge="vertical"
         android:flipInterval="5000"
         android:inAnimation="@android:anim/slide_in_left"
@@ -21,14 +20,15 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:rotation="0"
+            android:background="@drawable/white_tinted_background"
             android:scaleType="fitXY"
-            android:src="@drawable/beach" />
+            android:src="@drawable/beach_overlay" />
 
         <ImageView
             android:id="@+id/imageView2"
-            fa
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:background="@drawable/white_tinted_background"
             android:scaleType="fitXY"
             android:src="@drawable/cafe" />
 
@@ -36,6 +36,7 @@
             android:id="@+id/imageView3"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:background="@drawable/white_tinted_background"
             android:scaleType="fitXY"
             android:src="@drawable/cave" />
 
@@ -43,6 +44,7 @@
             android:id="@+id/imageView4"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:background="@drawable/white_tinted_background"
             android:scaleType="fitXY"
             android:src="@drawable/lion" />
 
@@ -50,6 +52,7 @@
             android:id="@+id/imageView5"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:background="@drawable/white_tinted_background"
             android:scaleType="fitXY"
             android:src="@drawable/sunset" />
 
@@ -57,6 +60,7 @@
             android:id="@+id/imageView6"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:background="@drawable/white_tinted_background"
             android:scaleType="fitXY"
             android:src="@drawable/valley" />
     </ViewFlipper>
