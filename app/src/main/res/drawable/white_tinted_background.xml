@@ -7,8 +7,8 @@
                     android:startColor="#FFFFFF"   <!-- Transparent white -->
                     android:endColor="#FFFFFFFF"     <!-- Solid white -->
                     android:angle="90"             <!-- Gradient direction (adjust as needed) -->
-            </gradient>
-        </shape>
-    </item>
+                </gradient>
+            </shape>
+        </item>
     </layer-list>
 </selector>
