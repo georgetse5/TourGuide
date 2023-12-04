@@ -29,12 +29,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private TextView rating;
         private TextView image;
 
-        public ItemViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            vicinity = (TextView) itemView.findViewById(R.id.vicinity);
-            rating = (TextView) itemView.findViewById(R.id.rating);
-            type = (TextView) itemView.findViewById(R.id.type);
+            name = itemView.findViewById(R.id.name);
+            vicinity = itemView.findViewById(R.id.vicinity);
+            rating = itemView.findViewById(R.id.rating);
+            type = itemView.findViewById(R.id.type);
         }
 
     }
@@ -53,7 +53,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
     }
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
@@ -76,7 +75,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
+
         return listRecyclerItem.size();
     }
+
 }
 

@@ -52,4 +52,5 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.0-alpha01")
     implementation("androidx.fragment:fragment-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation ("com.android.volley:volley:1.2.1")
 }

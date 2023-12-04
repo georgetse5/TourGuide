@@ -66,21 +66,21 @@
       },
       {
          "business_status" : "OPERATIONAL",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0903472,
                "lng" : 23.5418568
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0916611802915,
                   "lng" : 23.5430987302915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0889632197085,
                   "lng" : 23.5404007697085
@@ -91,15 +91,15 @@
          "icon_background_color" : "#13B5C7",
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Λαογραφικό Μουσείο Βλάχων",
-         "opening_hours" : 
+         "opening_hours" :
          {
             "open_now" : false
          },
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 2212,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/115773373000482374512\"\u003ePantelis Voukantsis\u003c/a\u003e"
                ],
@@ -108,7 +108,7 @@
             }
          ],
          "place_id" : "ChIJp26mYY5xqRQRT-Y-VWS73Ww",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GRR+4P Σέρρες, Ελλάδα",
             "global_code" : "8GH53GRR+4P"
@@ -116,7 +116,7 @@
          "rating" : 4.7,
          "reference" : "ChIJp26mYY5xqRQRT-Y-VWS73Ww",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "tourist_attraction",
@@ -128,21 +128,21 @@
       },
       {
          "business_status" : "OPERATIONAL",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0940141,
                "lng" : 23.554875
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.09543058029149,
                   "lng" : 23.5561813802915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.09273261970849,
                   "lng" : 23.5534834197085
@@ -153,15 +153,15 @@
          "icon_background_color" : "#13B5C7",
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Λαογραφικό Μουσείο Σαρακατσάνων",
-         "opening_hours" : 
+         "opening_hours" :
          {
             "open_now" : false
          },
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 608,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/109002610144047984569\"\u003eΛαογραφικό Μουσείο Σαρακατσάνων - Sarakatsani Folklore Museum\u003c/a\u003e"
                ],
@@ -170,7 +170,7 @@
             }
          ],
          "place_id" : "ChIJre7fA-xxqRQRtfb4xf65Kr4",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3HV3+JX Σέρρες, Ελλάδα",
             "global_code" : "8GH53HV3+JX"
@@ -178,7 +178,7 @@
          "rating" : 4.6,
          "reference" : "ChIJre7fA-xxqRQRtfb4xf65Kr4",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "tourist_attraction",
@@ -190,21 +190,21 @@
       },
       {
          "business_status" : "OPERATIONAL",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0998109,
                "lng" : 23.5696117
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.10115418029149,
                   "lng" : 23.5710848802915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0984562197085,
                   "lng" : 23.5683869197085
@@ -215,15 +215,15 @@
          "icon_background_color" : "#13B5C7",
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Μουσείο Φυσικής Ιστορίας",
-         "opening_hours" : 
+         "opening_hours" :
          {
             "open_now" : false
          },
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 3000,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/113391334031660198167\"\u003eΘωμάς Ζορμπάς\u003c/a\u003e"
                ],
@@ -232,7 +232,7 @@
             }
          ],
          "place_id" : "ChIJcex6Dt9xqRQR_7pijRnetR4",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3HX9+WR Σέρρες, Ελλάδα",
             "global_code" : "8GH53HX9+WR"
@@ -240,7 +240,7 @@
          "rating" : 4.7,
          "reference" : "ChIJcex6Dt9xqRQR_7pijRnetR4",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "tourist_attraction",
@@ -252,21 +252,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.08946570000001,
                "lng" : 23.5472944
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0908722802915,
                   "lng" : 23.5485408802915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0881743197085,
                   "lng" : 23.54584291970849
@@ -279,7 +279,7 @@
          "name" : "Προτομή Στρατηγού Μπακιρτζή Ευρυπίδη",
          "permanently_closed" : true,
          "place_id" : "ChIJPezDYLJxqRQR-Bv26I7Ov1c",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GQW+QW Σέρρες, Ελλάδα",
             "global_code" : "8GH53GQW+QW"
@@ -287,7 +287,7 @@
          "rating" : 5,
          "reference" : "ChIJPezDYLJxqRQR-Bv26I7Ov1c",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -298,21 +298,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0873619,
                "lng" : 23.545781
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.08871483029149,
                   "lng" : 23.5471306302915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.08601686970849,
                   "lng" : 23.5444326697085
@@ -325,14 +325,14 @@
          "name" : "Προτομή Ιωακειμίδη Σάββα",
          "permanently_closed" : true,
          "place_id" : "ChIJfwi2zChxqRQRYD5RbILsAr8",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GPW+W8 Σέρρες, Ελλάδα",
             "global_code" : "8GH53GPW+W8"
          },
          "reference" : "ChIJfwi2zChxqRQRYD5RbILsAr8",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -342,21 +342,21 @@
       },
       {
          "business_status" : "OPERATIONAL",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0873552,
                "lng" : 23.5482569
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0886429802915,
                   "lng" : 23.5495725802915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0859450197085,
                   "lng" : 23.5468746197085
@@ -367,15 +367,15 @@
          "icon_background_color" : "#13B5C7",
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Προτομή Ελευθερίου Βενιζέλου",
-         "opening_hours" : 
+         "opening_hours" :
          {
             "open_now" : true
          },
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 1728,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/117419231899494292765\"\u003eKostas Chid\u003c/a\u003e"
                ],
@@ -384,7 +384,7 @@
             }
          ],
          "place_id" : "ChIJ8Wx4gyxxqRQRoBluAQjPbbA",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GPX+W8 Σέρρες, Ελλάδα",
             "global_code" : "8GH53GPX+W8"
@@ -392,7 +392,7 @@
          "rating" : 5,
          "reference" : "ChIJ8Wx4gyxxqRQRoBluAQjPbbA",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -403,21 +403,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0908803,
                "lng" : 23.5480968
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0922292802915,
                   "lng" : 23.54944578029151
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0895313197085,
                   "lng" : 23.5467478197085
@@ -430,14 +430,14 @@
          "name" : "Ottoman Bath",
          "permanently_closed" : true,
          "place_id" : "ChIJVVVSWI1xqRQRKsDYm24OpAY",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GRX+96 Σέρρες, Ελλάδα",
             "global_code" : "8GH53GRX+96"
          },
          "reference" : "ChIJVVVSWI1xqRQRKsDYm24OpAY",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -447,21 +447,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0911455,
                "lng" : 23.5479382
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.09259658029149,
                   "lng" : 23.5492919802915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0898986197085,
                   "lng" : 23.5465940197085
@@ -473,11 +473,11 @@
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Αρχαία Βυζαντινά Ευρήματα",
          "permanently_closed" : true,
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 3000,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/113975731188804876870\"\u003eTheophilos Pisokas\u003c/a\u003e"
                ],
@@ -486,14 +486,14 @@
             }
          ],
          "place_id" : "ChIJYxcIEbNxqRQRCdC9oqQ0Oz0",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GRX+F5 Σέρρες, Ελλάδα",
             "global_code" : "8GH53GRX+F5"
          },
          "reference" : "ChIJYxcIEbNxqRQRCdC9oqQ0Oz0",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -503,21 +503,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0919052,
                "lng" : 23.552692
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.09328953029151,
                   "lng" : 23.5540253802915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.09059156970851,
                   "lng" : 23.5513274197085
@@ -529,11 +529,11 @@
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Άγαλμα Καφταντζή",
          "permanently_closed" : true,
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 2048,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/103416950500424430301\"\u003eTrifon Gko\u003c/a\u003e"
                ],
@@ -542,14 +542,14 @@
             }
          ],
          "place_id" : "ChIJW0bHzIZxqRQRKOujj70cDyk",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3HR3+Q3 Σέρρες, Ελλάδα",
             "global_code" : "8GH53HR3+Q3"
          },
          "reference" : "ChIJW0bHzIZxqRQRKOujj70cDyk",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -559,21 +559,21 @@
       },
       {
          "business_status" : "OPERATIONAL",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.09460430000001,
                "lng" : 23.5491318
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0959224802915,
                   "lng" : 23.5504108302915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0932245197085,
                   "lng" : 23.5477128697085
@@ -584,11 +584,11 @@
          "icon_background_color" : "#13B5C7",
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Εκκλησιαστικό Μουσείο Ιεράς Μητροπόλεως Σερρών Και Νιγρίτης Κειμηλιαρχείο 'Ψυχῆς Ἄκος΄",
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 2368,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/117713225789627750499\"\u003eVangelis Ionas\u003c/a\u003e"
                ],
@@ -597,7 +597,7 @@
             }
          ],
          "place_id" : "ChIJIR3BtOxxqRQRj7lleG1OEck",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3GVX+RM Σέρρες, Ελλάδα",
             "global_code" : "8GH53GVX+RM"
@@ -605,7 +605,7 @@
          "rating" : 4.5,
          "reference" : "ChIJIR3BtOxxqRQRj7lleG1OEck",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -616,21 +616,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.09466330000001,
                "lng" : 23.5573214
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0959479302915,
                   "lng" : 23.5587447302915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0932499697085,
                   "lng" : 23.5560467697085
@@ -643,7 +643,7 @@
          "name" : "Αδριάντας Λεωνίδα Παπαπαύλου",
          "permanently_closed" : true,
          "place_id" : "ChIJG-EuuT5xqRQRWkPICNaqHCs",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3HV4+VW Σέρρες, Ελλάδα",
             "global_code" : "8GH53HV4+VW"
@@ -651,7 +651,7 @@
          "rating" : 5,
          "reference" : "ChIJG-EuuT5xqRQRWkPICNaqHCs",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -662,21 +662,21 @@
       },
       {
          "business_status" : "OPERATIONAL",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0864765,
                "lng" : 23.5608267
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0879423302915,
                   "lng" : 23.5619247302915
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.08524436970851,
                   "lng" : 23.5592267697085
@@ -687,11 +687,11 @@
          "icon_background_color" : "#13B5C7",
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Κωνσταντίνοσ Ξενάκης",
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 4608,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/113627253054791859080\"\u003eΣτέφανος Βλάχος\u003c/a\u003e"
                ],
@@ -700,7 +700,7 @@
             }
          ],
          "place_id" : "ChIJUYU75eJxqRQRWWdBSGdcyeg",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3HP6+H8 Σέρρες, Ελλάδα",
             "global_code" : "8GH53HP6+H8"
@@ -708,7 +708,7 @@
          "rating" : 4.8,
          "reference" : "ChIJUYU75eJxqRQRWWdBSGdcyeg",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -719,21 +719,21 @@
       },
       {
          "business_status" : "CLOSED_TEMPORARILY",
-         "geometry" : 
+         "geometry" :
          {
-            "location" : 
+            "location" :
             {
                "lat" : 41.0974898,
                "lng" : 23.4991142
             },
-            "viewport" : 
+            "viewport" :
             {
-               "northeast" : 
+               "northeast" :
                {
                   "lat" : 41.0987932802915,
                   "lng" : 23.50042678029151
                },
-               "southwest" : 
+               "southwest" :
                {
                   "lat" : 41.0960953197085,
                   "lng" : 23.4977288197085
@@ -745,11 +745,11 @@
          "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/museum_pinlet",
          "name" : "Κέντρο Προστασίας Φυσικού Περιβάλλοντος",
          "permanently_closed" : true,
-         "photos" : 
+         "photos" :
          [
             {
                "height" : 2560,
-               "html_attributions" : 
+               "html_attributions" :
                [
                   "\u003ca href=\"https://maps.google.com/maps/contrib/112926366986357684751\"\u003eSakis Ompasakis\u003c/a\u003e"
                ],
@@ -758,7 +758,7 @@
             }
          ],
          "place_id" : "ChIJlyCJNLI5ZkARzLUFSsb_QCE",
-         "plus_code" : 
+         "plus_code" :
          {
             "compound_code" : "3FWX+XJ Λευκώνας, Ελλάδα",
             "global_code" : "8GH53FWX+XJ"
@@ -766,7 +766,7 @@
          "rating" : 4,
          "reference" : "ChIJlyCJNLI5ZkARzLUFSsb_QCE",
          "scope" : "GOOGLE",
-         "types" : 
+         "types" :
          [
             "museum",
             "point_of_interest",
@@ -778,3 +778,4 @@
    ],
    "status" : "OK"
 }
+
