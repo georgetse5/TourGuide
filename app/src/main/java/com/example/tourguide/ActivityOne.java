@@ -1,36 +1,41 @@
 package com.example.tourguide;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 
 import java.util.HashMap;
 
 public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final String TAG = "MapActivity";
-
-
     private GoogleMap MyMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private FusedLocationProviderClient myFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,17 +147,34 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     private void pinLocations(@NonNull GoogleMap map) {
 
         LatLng test1 = new LatLng(41.074712, 23.553938);
-        MarkerOptions markerOptions = new MarkerOptions().position(test1).title("TEI");
+        MarkerOptions markerOptions = new MarkerOptions().position(test1).title("TEI")
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
         map.addMarker(markerOptions);
 
         LatLng test2 = new LatLng(41.091117, 23.549866);
-        MarkerOptions markerOptions1 = new MarkerOptions().position(test2).title("Center");
+        MarkerOptions markerOptions1 = new MarkerOptions().position(test2).title("Center")
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
         map.addMarker(markerOptions1);
 
         LatLng test3 = new LatLng(41.09093836950161, 23.549360012910867);
-        MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni");
+        MarkerOptions markerOptions2 = new MarkerOptions().position(test3).title("Mpezesteni")
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
         map.addMarker(markerOptions2);
 
+    }
+
+    private BitmapDescriptor bitmapDescriptor(Context context, int vectorResId){
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }
