@@ -1,17 +1,11 @@
 package com.example.tourguide;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.tourguide.ActivityFour;
-import com.example.tourguide.ActivityOne;
-import com.example.tourguide.ActivityThree;
-import com.example.tourguide.ActivityFour;
-import com.example.tourguide.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
          }
 
         });
+
 
 
 
