@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,6 +26,10 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -32,6 +37,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
@@ -55,9 +62,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private LocationListener locationListener;
     private FusedLocationProviderClient mFusedLocationClient;
-    public double lat;
-    public double longi;
-    public PlacesClient placesClient;
+    public LatLng lat ;
+    public LatLng longi;
+    private LatLng currentloc;
+    private LatLng testing = new LatLng(41.084666328,23.543164494);
 
 
     @Override
@@ -68,7 +76,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Places.initializeWithNewPlacesApiEnabled(getApplicationContext(),"AIzaSyCCxiS4m7nTl9UZTj9XqS5ACqEIUMIpOfg");
+        Places.initialize(getApplicationContext(),"AIzaSyAWo9aSdWkspvZMFeeWMU7WKRhPNCyPqxY");
+        PlacesClient placesClient = Places.createClient(this);
 
 
         locationListener = new LocationListener() {
@@ -105,7 +114,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
-        autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
+        autocompleteSupportFragment.setTypeFilter(TypeFilter.ADDRESS);
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -126,15 +135,14 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
 
-       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(38.0959224802915, 23.5504108302915),
-               new LatLng(41.0932245197085, 23.5477128697085));
+       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915));
 
 
        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
                 //.setLocationRestriction(bounds)
-                .setOrigin(new LatLng(41.09460430000001, 23.5491318))
+                .setOrigin(currentloc)
                 .setCountries("GR")
                 .setSessionToken(token)
                 .setQuery("Serres")
@@ -143,7 +151,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
                 Log.i(TAG, prediction.getPlaceId());
-                Log.i(TAG, prediction.getPrimaryText(null).toString());
+                Log.i(TAG, prediction.getFullText(null).toString());
             }
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
@@ -268,7 +276,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 }
             });
 
-    /* private void getLocation() {
+      private void getLocation() {
         if (checkPermissions()) {
 
             if (isLocationEnabled()) {
@@ -289,8 +297,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                         if (location == null) {
                             requestNewLocationData();
                         } else {
-                            lat = location.getLatitude();
-                            longi = location.getLongitude();
+                            currentloc = new LatLng(location.getLatitude(),location.getLongitude());
                         }
                     }
                 });
@@ -351,8 +358,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
-            lat = mLastLocation.getLatitude();
-            longi = mLastLocation.getLongitude();
+            currentloc = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+           // lat = mLastLocation.getLatitude();
+            //longi = (LatLng) mLastLocation.getLongitude();
         }
-    }; */
+    };
 }
