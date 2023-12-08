@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.android.libraries.places:places:2.5.0")
+    implementation("com.google.android.libraries.places:places:3.3.0")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
@@ -53,4 +53,5 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.2.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation ("com.android.volley:volley:1.2.1")
+
 }

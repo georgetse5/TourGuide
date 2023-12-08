@@ -1,7 +1,6 @@
 package com.example.tourguide;
 
 
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,9 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -39,7 +39,6 @@ public class ActivityFour extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_four);
-        apiCalls();
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -56,30 +55,41 @@ public class ActivityFour extends AppCompatActivity {
     private void apiCalls(){
         ArrayList<String> requests = new ArrayList<>();
         requests.add("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.088904%2C23.546338&radius=5000&type=restaurant&key=AIzaSyCCxiS4m7nTl9UZTj9XqS5ACqEIUMIpOfg");
-        requests.add("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.088904%2C23.546338&radius=5000&type=cafe&key=AIzaSyCCxiS4m7nTl9UZTj9XqS5ACqEIUMIpOfg");
-        requests.add("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.088904%2C23.546338&radius=5000&type=museum&key=AIzaSyCCxiS4m7nTl9UZTj9XqS5ACqEIUMIpOfg");
+        //requests.add("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.088904%2C23.546338&radius=5000&type=cafe&key=AIzaSyCCxiS4m7nTl9UZTj9XqS5ACqEIUMIpOfg");
+        //requests.add("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.088904%2C23.546338&radius=5000&type=museum&key=AIzaSyCCxiS4m7nTl9UZTj9XqS5ACqEIUMIpOfg");
         for (int i=0;i<requests.size();i++) {
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, requests.get(i), null, new Response.Listener<JSONObject>() {
+            System.out.println("For");
+            RequestQueue queue = Volley.newRequestQueue(this);
+            StringRequest request = new StringRequest(Request.Method.GET, requests.get(i), new Response.Listener<String>() {
                 @Override
-                public void onResponse(JSONObject response) {
+                public void onResponse(String response) {
                     try {
-                        String name = response.getString("name");
+                        JSONArray array = new JSONArray(response);
+                        /* String name = response.getString("name");
                         String type = response.getString("type");
                         String rating = response.getString("rating");
                         String vicinity = response.getString("vicinity");
                         Sights sight = new Sights(name,vicinity,rating,type);
                         viewItems.add(sight);
-                        //parseJson(response.toString());
+                        System.out.println("Sight:");
+                        System.out.println(sight);
+                        parseJson(response.toString()); */
+                        int j;
+                        for (j = 0; j < array.length();j++) {
+                            JSONObject jsonObject = array.getJSONObject(j);
+                            Sights sight = new Sights(jsonObject.getString("name"), jsonObject.getString("vicinity"), jsonObject.getString("rating"), jsonObject.getString("type"));
+                            viewItems.add(sight);
+                            System.out.println("Testtttt");
+                            System.out.println(viewItems.size());
+                        }
+                    }catch (JSONException e) {
 
-
-                    }catch (Exception e) {
-
-                    }}}, new Response.ErrorListener() {
+                }}}, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            });
+        });
 
             Volley.newRequestQueue(this).add(request);
         }
@@ -161,6 +171,8 @@ public class ActivityFour extends AppCompatActivity {
                 Sights sight = new Sights(name,vicinity,rating,type);
                 viewItems.add(sight);
                 Log.d(TAG, String.valueOf(shopParser));
+                System.out.println("Sight:");
+                System.out.println(sight.getName());
             }
         }
     }

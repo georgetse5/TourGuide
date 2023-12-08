@@ -1,22 +1,11 @@
 package com.example.tourguide;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.tourguide.ActivityFour;
-import com.example.tourguide.ActivityOne;
-import com.example.tourguide.ActivityThree;
-import com.example.tourguide.ActivityFour;
-import com.example.tourguide.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         button1 = findViewById(R.id.ActivityOne);
         button2 = findViewById(R.id.ActivityTwo);
         button3 = findViewById(R.id.ActivityThree);
@@ -93,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
          }
 
         });
+
+
+
 
 
 
