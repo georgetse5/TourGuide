@@ -103,6 +103,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 // Handle when the location provider is disabled
             }
         };
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -113,8 +114,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PLUS_CODE, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
         autocompleteSupportFragment.setTypeFilter(TypeFilter.ADDRESS);
+
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -124,10 +126,18 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 Log.i(TAG, "Place:" + place.getName() + ", " + place.getId());
+                
+                System.out.println("Name: " + place.getName());
+                System.out.println("Address: " + place.getAddress());
+                LatLng loc = place.getLatLng();
+                System.out.println("Lat_Lng: " + place.getLatLng());
+                System.out.println("Plus code: " + place.getPlusCode());
+
+                pinSelectedMarker(loc);
 
             }
         });
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES);
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES, Place.Field.LAT_LNG, Place.Field.PLUS_CODE);
         // Start the autocomplete intent.
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .build(this);
@@ -247,6 +257,15 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
 
         map.addMarker(markerOptions2);
+
+    }
+
+    void pinSelectedMarker(LatLng loc) {
+
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title("Test")
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
+        MyMap.addMarker(markerOptions10);
 
     }
 

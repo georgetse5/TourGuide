@@ -1,6 +1,7 @@
 package com.example.tourguide;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,7 +50,7 @@ public class ActivityThree extends AppCompatActivity {
 
     public void loadPlaces() {
 
-        //TextView viewData = (TextView) findViewById(R.id.text_view_data);
+        TextView viewData = (TextView) findViewById(R.id.text_view_data);
 
 
         placesRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -84,9 +85,7 @@ public class ActivityThree extends AppCompatActivity {
                         System.out.println(data);
                         System.out.println("Number of records:" + counter);
                         data += "Number of records: " + counter + "\n\n";
-                        //viewData.setText(data);
-
-                        // Ta dedomena emfanizontai kanonika sto System.out.println(data) mesw toy logcat
+                        viewData.setText(data);
 
                     }
                 });
