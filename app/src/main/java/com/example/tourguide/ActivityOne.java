@@ -159,7 +159,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
 //                .setLocationRestriction(bounds)
-                .setOrigin(new LatLng(41.09103896171014, 23.550234325649708))
+                .setOrigin(currentloc)
                 .setCountries("GR")
                 .setSessionToken(token)
                 .setQuery("Serres")
