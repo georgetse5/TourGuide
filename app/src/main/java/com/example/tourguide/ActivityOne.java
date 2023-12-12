@@ -30,12 +30,14 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -65,7 +67,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     public LatLng lat ;
     public LatLng longi;
     private LatLng currentloc;
+//    private LatLng testingCurrentLocation = new LatLng(41.09113937409494, 23.550021265102966);
     private LatLng testing = new LatLng(41.084666328,23.543164494);
+    public String placeName;
 
 
     @Override
@@ -85,6 +89,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             public void onLocationChanged(Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
+                System.out.println("onLocationChanged called!!!");
                 // Use the location data as needed
             }
 
@@ -115,7 +120,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PLUS_CODE, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
-        autocompleteSupportFragment.setTypeFilter(TypeFilter.ADDRESS);
+        autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
 
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -126,8 +131,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 Log.i(TAG, "Place:" + place.getName() + ", " + place.getId());
-                
-                System.out.println("Name: " + place.getName());
+
+                placeName = place.getName();
+                System.out.println("Name: " + placeName);
                 System.out.println("Address: " + place.getAddress());
                 LatLng loc = place.getLatLng();
                 System.out.println("Lat_Lng: " + place.getLatLng());
@@ -145,18 +151,21 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
 
-       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915));
+       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.06104388668157, 23.502687403900623),
+                                                                new LatLng(41.108726881157594, 23.57402786885185));
 
 
        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 .setLocationBias(bounds)
-                //.setLocationRestriction(bounds)
-                .setOrigin(currentloc)
+//                .setLocationRestriction(bounds)
+                .setOrigin(new LatLng(41.09103896171014, 23.550234325649708))
                 .setCountries("GR")
                 .setSessionToken(token)
                 .setQuery("Serres")
                 .build();
+
+        System.out.println("Bounds: " + bounds);
 
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
@@ -183,7 +192,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             MyMap.getUiSettings().setZoomControlsEnabled(true);
 
-            pinLocations(googleMap);
+//            pinLocations(googleMap);
         }
 
     }
@@ -262,10 +271,13 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     void pinSelectedMarker(LatLng loc) {
 
-        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title("Test")
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(placeName)
                 .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
 
         MyMap.addMarker(markerOptions10);
+
+        LatLng markerLatLng = markerOptions10.getPosition();
+        MyMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 20));
 
     }
 
@@ -317,6 +329,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                             requestNewLocationData();
                         } else {
                             currentloc = new LatLng(location.getLatitude(),location.getLongitude());
+                            System.out.println(currentloc);
                         }
                     }
                 });
