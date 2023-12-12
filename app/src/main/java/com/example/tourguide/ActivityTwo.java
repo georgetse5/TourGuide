@@ -32,7 +32,7 @@ public class ActivityTwo extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
         List<Item> items = new ArrayList<Item>();
-        items.add(new Item("Ελλήνων Γέυσεις","Test",R.drawable.restaurant));
+        items.add(new Item("Ελλήνων Γέυσεις","2321 098808",R.drawable.restaurant));
         items.add(new Item("Μαντάμ","2321 401366",R.drawable.restaurant));
         items.add(new Item("Κάππαρη","2321 020066",R.drawable.restaurant));
         items.add(new Item("Αντάμωμα","2321 071533",R.drawable.restaurant));
