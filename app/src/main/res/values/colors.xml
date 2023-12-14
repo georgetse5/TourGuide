@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="light_cream">#FEFAE0</color>      <!--experimenting on text colors-->
+    <color name="contrast_text">#2C3E50</color>     <!--color for text with great contrast-->
+
+    <color name="pale_olive">#CCD5AE</color>      <!--maps color-->
+    <color name="accent_for_pale_olive">#C17858</color>
+
+    <color name="pastel_green">#E9EDC9</color>      <!--restaurants color-->
+    <color name="accent_for_pastel_green">#BAA8D9</color>
+
+    <color name="off_white">#FAEDCD</color>     <!--sights color-->
+    <color name="accent_for_off_white">#A5BFA0</color>
+
+    <color name="tan">#D4A373</color>      <!--favourites color-->
+    <color name="accent_for_tan">#905F5F</color>
 </resources>

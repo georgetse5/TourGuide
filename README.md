@@ -1,1 +1,0 @@
-# A TourGuide project for educational purposes which finds the attractions and all nearby places in town Serres.
