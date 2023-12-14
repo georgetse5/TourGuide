@@ -43,6 +43,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceTypes;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
@@ -66,6 +67,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     public LatLng longi;
     private LatLng currentloc;
     private LatLng testing = new LatLng(41.084666328,23.543164494);
+    private String query;
 
 
     @Override
@@ -114,7 +116,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
-        autocompleteSupportFragment.setTypeFilter(TypeFilter.ADDRESS);
+        autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
+        //autocompleteSupportFragment.setLocationRestriction(RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915)));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -123,7 +126,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.i(TAG, "Place:" + place.getName() + ", " + place.getId());
+                Log.i(TAG, "Place:" + place.getName() + ", " + place.getAddress()+ ", " + place.getPhoneNumber());
+
+
 
             }
         });
@@ -140,12 +145,13 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
-                .setLocationBias(bounds)
-                //.setLocationRestriction(bounds)
-                .setOrigin(currentloc)
+                //.setLocationBias(bounds)
+                .setLocationRestriction(bounds)
+                .setOrigin(new LatLng(41.08524436970851,23.5592267697085))
                 .setCountries("GR")
+                .setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS))
                 .setSessionToken(token)
-                .setQuery("Serres")
+                .setQuery("Greece")
                 .build();
 
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
