@@ -98,17 +98,18 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
         setContentView(R.layout.activity_one);
+        Places.initialize(getApplicationContext(), "AIzaSyAWo9aSdWkspvZMFeeWMU7WKRhPNCyPqxY");
+        placesClient = Places.createClient(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Places.initialize(getApplicationContext(),"AIzaSyAWo9aSdWkspvZMFeeWMU7WKRhPNCyPqxY");
-        placesClient = Places.createClient(this);
 
 
         locationListener = new LocationListener() {
@@ -155,8 +156,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.i(TAG, "Place:" + place.getName() + ", " + place.getAddress()+ ", " + place.getPhoneNumber());
-
+                Log.i(TAG, "Place:" + place.getName() + ", " + place.getAddress() + ", " + place.getPhoneNumber());
 
 
             }
@@ -166,17 +166,17 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .build(this);
         startAutocomplete.launch(intent);
-       AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
 
-       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915));
+        RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.08524436970851, 23.5592267697085), new LatLng(41.0879423302915, 23.5619247302915));
 
 
-       FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
                 //.setLocationBias(bounds)
                 .setLocationRestriction(bounds)
-                .setOrigin(new LatLng(41.08524436970851,23.5592267697085))
+                .setOrigin(new LatLng(41.08524436970851, 23.5592267697085))
                 .setCountries("GR")
                 .setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS))
                 .setSessionToken(token)
@@ -194,13 +194,57 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 Log.e(TAG, "Place not found: " + apiException.getStatusCode());
             }
         });
-
     }
+
+    @Override
+    protected void onSavedInstanceState(Bundle outState) {
+        if (MyMap != null) {
+            outState.putParceable(KEY_CAMERA_POSITION, MyMap.getCameraPosition());
+            outState.putParceable(KEY_LOCATION, lastKnownLocation);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.current_place_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.optin_get_place) {
+            showCurrentPlace();
+        }
+        return true;
+    }
+
 
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        MyMap = googleMap;
+        this.MyMap = googleMap;
+        this.MyMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContets(Marker marker) {
+                View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents,
+                        (FrameLayout) findViewById(R.id.map), false);
+
+                TextView title = infoWindow.findViewById(R.id.title);
+                title.setText(marker.getTitle());
+
+                TextView snippet = infoWindow.findViewById(R.id.snippet);
+                snippet.setText(marker.getSnippet());
+
+                return infoWindow;
+            }
+        });
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
