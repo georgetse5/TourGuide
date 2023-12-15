@@ -79,6 +79,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private LocationListener locationListener;
     private FusedLocationProviderClient mFusedLocationClient;
+    private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private static final int DEFAULT_ZOOM = 15;
+    private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private boolean locationPermissionGranted;
     private Location lastKnownLocation;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION ="location";
@@ -196,24 +200,27 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+    //Saves state of the map when activity is paused.
     @Override
-    protected void onSavedInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {
         if (MyMap != null) {
-            outState.putParceable(KEY_CAMERA_POSITION, MyMap.getCameraPosition());
-            outState.putParceable(KEY_LOCATION, lastKnownLocation);
+            outState.putParcelable(KEY_CAMERA_POSITION, MyMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, lastKnownLocation);
         }
         super.onSaveInstanceState(outState);
     }
 
+    //Sets up the options menu
     @Override
-    public boolean onCreateOptionMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.current_place_menu, menu);
         return true;
     }
 
+    //Handles a click on the menu option to get a place.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.optin_get_place) {
+        if (item.getItemId() == R.id.option_get_place) {
             showCurrentPlace();
         }
         return true;
@@ -224,15 +231,19 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.MyMap = googleMap;
+        //Use a custom info window adapter to handle multiple lines of text in the
+        //info window contents.
         this.MyMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             @Override
+            //Return null here, so that getInfoContents() is called next.
             public View getInfoWindow(Marker arg0) {
                 return null;
             }
 
             @Override
-            public View getInfoContets(Marker marker) {
+            public View getInfoContents(Marker marker) {
+                //Inflate the layouts for the info window, title and snippet.
                 View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents,
                         (FrameLayout) findViewById(R.id.map), false);
 
@@ -245,6 +256,54 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 return infoWindow;
             }
         });
+
+        getLocationPermission();
+        updateLocationUI();
+        getDeviceLocation();
+    }
+    private void getDeviceLocation() {
+        try {
+            if (locationPermissionGranted) {
+                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            //set the map's camera position to the current location of the device.
+                            lastKnownLocation = task.getResult();
+                            if (lastKnownLocation != null) {
+                                MyMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(lastKnownLocation.getLatitude(),
+                                                lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            }
+                        } else {
+                            Log.d(TAG, "Current location is null, Using defaults.");
+                            Log.e(TAG, "Exception: %s", task.getException());
+                            MyMap.moveCamera(CameraUpdateFactory
+                                    .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                            map.getUiSetings().setMyLocationButtonEnabled(false);
+
+
+                        }
+                    }
+                });
+
+            }
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+    private void getLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
