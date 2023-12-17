@@ -38,7 +38,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,8 +55,6 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.firebase.Firebase;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -150,7 +147,16 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
                 pinSelectedMarker(loc);
 
-                savePlaceToDatabase();
+                String pid = place.getId();
+                String pname = place.getName();
+                String paddress = place.getAddress();
+                double lati = loc.latitude;
+                double longit = loc.longitude;
+                String type = "Undefined";
+                String pPhone = place.getPhoneNumber();
+
+
+                savePlaceToDatabase(pid, pname, paddress, lati, longit, type, pPhone);
 
             }
         });
@@ -326,19 +332,24 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     // =======================  SAVE PLACE TO DATABASE  =====================================
 
-    private void savePlaceToDatabase(){
+    private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, String type, String pPhone){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        String placeid, name, address, type, phone;
-        double latitude, longitude;
+        String placeid = pid;
+        String name = pname;
+        String address = paddress;
+        String types = type;
+        String phone = pPhone;
+        double latitude = lati;
+        double longitude = longit;
 
-        placeid = "fhHDJ3jFKJh45lf1ka";
-        name = "testPlace";
-        address = "Merarxias";
-        latitude = 41.09114892507394;
-        longitude = 23.549864919543243;
-        type= "Food";
-        phone = "2321011111";
+//        placeid = "fhHDJ3jFKJh45lf1ka";
+//        name = "testPlace";
+//        address = "Merarxias";
+//        latitude = 41.09114892507394;
+//        longitude = 23.549864919543243;
+//        types= "Food";
+//        phone = "2321011111";
 
         Map<String, Object> places = new HashMap<>();
         places.put("PlaceID", placeid);
@@ -346,7 +357,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         places.put("Address", address);
         places.put("Latitude", latitude);
         places.put("Longitude", longitude);
-        places.put("Type", type);
+        places.put("Type", types);
         places.put("Phone", phone);
 
 
