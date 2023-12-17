@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -40,6 +41,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
@@ -53,9 +56,15 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -140,6 +149,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 System.out.println("Plus code: " + place.getPlusCode());
 
                 pinSelectedMarker(loc);
+
+                savePlaceToDatabase();
 
             }
         });
@@ -247,6 +258,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    // =============================  PIN LOCATIONS  ========================================
+
     private void pinLocations(@NonNull GoogleMap map) {
 
         LatLng test1 = new LatLng(41.074712, 23.553938);
@@ -269,6 +282,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    // =========================  PIN SELECTED MARKER  ======================================
+
     void pinSelectedMarker(LatLng loc) {
 
         MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(placeName)
@@ -280,6 +295,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         MyMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 20));
 
     }
+
+    // ==========================  BITMAP DESCRIPTOR  =======================================
 
     private BitmapDescriptor bitmapDescriptor(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
@@ -306,6 +323,47 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                     Log.i(TAG, "User canceled autocomplete");
                 }
             });
+
+    // =======================  SAVE PLACE TO DATABASE  =====================================
+
+    private void savePlaceToDatabase(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        String placeid, name, address, type, phone;
+        double latitude, longitude;
+
+        placeid = "fhHDJ3jFKJh45lf1ka";
+        name = "testPlace";
+        address = "Merarxias";
+        latitude = 41.09114892507394;
+        longitude = 23.549864919543243;
+        type= "Food";
+        phone = "2321011111";
+
+        Map<String, Object> places = new HashMap<>();
+        places.put("PlaceID", placeid);
+        places.put("Name", name);
+        places.put("Address", address);
+        places.put("Latitude", latitude);
+        places.put("Longitude", longitude);
+        places.put("Type", type);
+        places.put("Phone", phone);
+
+
+        db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // ==========================  GET LOCATION  ============================================
 
       private void getLocation() {
         if (checkPermissions()) {
@@ -343,21 +401,29 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         }
 
 
+    // ==========================  REQUEST PERMISSION  ======================================
+
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
     }
 
+    // ==========================  CHECK PERMISSIONS  =======================================
+
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    // ==========================  IS LOCATION ENABLED  =====================================
+
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
+
+    // =========================  REQUEST NEW LOCATION DATA  ================================
 
      private void requestNewLocationData() {
 
@@ -385,8 +451,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
-    private LocationCallback mLocationCallback = new LocationCallback() {
+    // ===========================  LOCATION CALL BACK  =====================================
 
+    private LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
