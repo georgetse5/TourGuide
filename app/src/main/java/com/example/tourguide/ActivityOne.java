@@ -115,7 +115,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER,Place.Field.TYPES));
         autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
         //autocompleteSupportFragment.setLocationRestriction(RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915)));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -126,13 +126,13 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.i(TAG, "Place:" + place.getName() + ", " + place.getAddress()+ ", " + place.getPhoneNumber());
+                Log.i(TAG, "Place:" + place.getName() + ", " + place.getAddress()+ ", " + place.getPhoneNumber()+ ", " + place.getPlaceTypes());
 
 
 
             }
         });
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES);
+        List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER,Place.Field.TYPES);
         // Start the autocomplete intent.
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .build(this);
