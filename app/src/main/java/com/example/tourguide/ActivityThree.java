@@ -1,94 +1,64 @@
 package com.example.tourguide;
 
+
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
+import com.example.tourguide.Item;
+import com.example.tourguide.MyAdapter;
+import com.example.tourguide.R;
+import com.google.android.libraries.places.api.Places;
+import android.os.Bundle;
+import android.util.Log;
+import android.os.Environment;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ActivityThree extends AppCompatActivity {
-
-    ArrayList<String> placesNames = new ArrayList<>();
-    ArrayList<Double> placesLat = new ArrayList<>();
-    ArrayList<Double> placesLong = new ArrayList<>();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference placesRef = db.collection("places");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_three);
 
-        loadPlaces();
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
-//        Map<String, Object> places = new HashMap<>();
-//        places.put("name", "Place");
-//        places.put("latitude", "41.09114892507394");
-//        places.put("longitude", "23.549864919543243");
-//        places.put("description", "A test text for the place");
-//
-//        db.collection("places").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//            @Override
-//            public void onSuccess(DocumentReference documentReference) {
-//                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-        
-    }
-
-    public void loadPlaces() {
-
-        TextView viewData = (TextView) findViewById(R.id.text_view_data);
+        List<Item> items = new ArrayList<Item>();
+        items.add(new Item("Αυτοκινητοδρόμιο Σερρών","Πίστα αγώνων",R.drawable.sights));
+        items.add(new Item("Αρχαιολογικό Μουσείο Σερρών (Μπεζεστένι)","Μουσείο",R.drawable.sights));
+        items.add(new Item("Λαογραφικό μουσείο Καρακατσάνων","Μουσείο",R.drawable.sights));
+        items.add(new Item("Ζιντζιρλί Τζαμί","Τζαμί",R.drawable.sights));
+        items.add(new Item("Κοιλάδα Αγίων Αναργύρων","Αξιοθέατο",R.drawable.sights));
+        items.add(new Item("Χιονοδρομικό κέντρο Λαϊλιά","Αξιοθέατο",R.drawable.sights));
+        items.add(new Item("Ακρόπολη Σερρών (Cityzen)","Αξιοθέατο",R.drawable.sights));
+        items.add(new Item("Ιερά Μονή Τιμίου Προδρόμου","Εκκλησία",R.drawable.sights));
+        items.add(new Item("Γήπεδο Πανσερραϊκού","Αξιοθέατο",R.drawable.sights));
+        items.add(new Item("Λουτρά σιδηροκάστρου","Ιαματικά Λουτρά",R.drawable.sights));
 
 
-        placesRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        String data = "";
-                        int counter = 0;
-                      
 
-                        data += "For testing purposes only\n=========================\n\n";
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Places places = documentSnapshot.toObject(Places.class);
-                            counter +=1;
+        Log.d("ActivityThree", "Number of items in the list: " + items.size());
 
-                            String name = places.getName();
-                            String description = places.getDescription();
-                            double latitude = places.getLatitude();
-                            double longitude = places.getLongitude();
 
-                            placesNames.add(name);
-                            placesLat.add(latitude);
-                            placesLong.add(longitude);
+        recyclerView.setAdapter(new MyAdapter(this, items));
 
-//                            data += "Name: " + name + "\nDescription: " + description + "\n\n";
-                        }
 
-                        for (int i = 0 ; i < placesNames.size() ; i++) {
-                            data += "Name: " + placesNames.get(i) + "\nLatitude: " + placesLat.get(i) + "\nLongitude: " + placesLong.get(i) + "\n\n";
-                        }
-
-                        System.out.println(data);
-                        System.out.println("Number of records:" + counter);
-                        data += "Number of records: " + counter + "\n\n";
-                        viewData.setText(data);
-
-                    }
-                });
     }
 
 }

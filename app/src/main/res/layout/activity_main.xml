@@ -1,65 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:autoStart="true"
+        android:fadingEdge="vertical"
+        android:flipInterval="5000"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right">
 
-    <Button
-        android:id="@+id/ActivityOne"
-        android:layout_width="218dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:rotation="0"
+            android:scaleType="fitXY"
+            android:src="@drawable/beach" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/coffee" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/cave" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/lion" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/sunset" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/valley" />
+    </ViewFlipper>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Google Maps"
-        android:textColor="#FFFFFF" />
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/ActivityOne"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="🗺️Explore"
+            android:background="@drawable/maps_background_button"
+            android:textColor="@color/contrast_text"
+            app:layout_constraintBottom_toTopOf="@+id/ActivityTwo"
+            app:layout_constraintEnd_toStartOf="@+id/ActivityFour"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/ActivityTwo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="15dp"
+            android:text="🍴Restaurants"
+            android:background="@drawable/restaurants_background_button"
+            android:textColor="@color/contrast_text"
+            app:layout_constraintEnd_toStartOf="@+id/ActivityThree"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ActivityOne" />
+
+        <Button
+            android:id="@+id/ActivityThree"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:text="🏞️Sights"
+            android:background="@drawable/sights_background_button"
+            android:textColor="@color/contrast_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ActivityTwo"
+            app:layout_constraintTop_toBottomOf="@+id/ActivityFour" />
+
+        <Button
+            android:id="@+id/About"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="30dp"
+            android:text="ℹ️About"
+            android:background="@null"
+            android:textColor="@color/contrast_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/ActivityThree"
+            app:layout_constraintStart_toStartOf="@+id/ActivityTwo"
+            app:layout_constraintTop_toBottomOf="@+id/ActivityTwo" />
+
+        <Button
+            android:id="@+id/ActivityFour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:text="❤️Favourites"
+            android:background="@drawable/favourites_button_background"
+            android:textColor="@color/contrast_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ActivityOne"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <Button
-        android:id="@+id/ActivityTwo"
-        android:layout_width="218dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ActivityOne"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="70dp"
-        android:text="Restaurants"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/ActivityThree"
-        android:layout_width="218dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ActivityTwo"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="70dp"
-        android:text="Sights"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/ActivityFour"
-        android:layout_width="218dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ActivityThree"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="70dp"
-        android:text="Favourites"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/About"
-        android:layout_width="218dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ActivityFour"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="70dp"
-        android:text="About"
-        android:textColor="#FFFFFF" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

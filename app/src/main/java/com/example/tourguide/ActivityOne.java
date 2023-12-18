@@ -47,6 +47,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceTypes;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
@@ -77,7 +78,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     private LatLng currentloc;
 //    private LatLng testingCurrentLocation = new LatLng(41.09113937409494, 23.550021265102966);
     private LatLng testing = new LatLng(41.084666328,23.543164494);
+
     public String placeName;
+    private String query;
+
 
 
     @Override
@@ -127,6 +131,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+ 
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PLUS_CODE, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
         autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
 
@@ -138,7 +143,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.i(TAG, "Place:" + place.getName() + ", " + place.getId());
+                Log.i(TAG, "Place:" + place.getName() + ", " + place.getAddress()+ ", " + place.getPhoneNumber()+ ", " + place.getPlaceTypes());
+
+
 
                 List<String> testTypes;
                 String type = "";
@@ -193,7 +200,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
+
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES, Place.Field.LAT_LNG, Place.Field.PLUS_CODE);
+
         // Start the autocomplete intent.
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .build(this);
@@ -207,12 +216,15 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
+
                 .setLocationBias(bounds)
 //                .setLocationRestriction(bounds)
                 .setOrigin(currentloc)
+
                 .setCountries("GR")
+                .setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS))
                 .setSessionToken(token)
-                .setQuery("Serres")
+                .setQuery("Greece")
                 .build();
 
         System.out.println("Bounds: " + bounds);
