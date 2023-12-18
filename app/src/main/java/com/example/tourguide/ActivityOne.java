@@ -57,7 +57,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -138,12 +140,26 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             public void onPlaceSelected(@NonNull Place place) {
                 Log.i(TAG, "Place:" + place.getName() + ", " + place.getId());
 
+                List<String> testTypes;
+                String type = "";
+
                 placeName = place.getName();
                 System.out.println("Name: " + placeName);
                 System.out.println("Address: " + place.getAddress());
                 LatLng loc = place.getLatLng();
                 System.out.println("Lat_Lng: " + place.getLatLng());
                 System.out.println("Plus code: " + place.getPlusCode());
+                System.out.println("Types: " + place.getPlaceTypes());
+
+//                String targetString = "food";
+                testTypes = place.getPlaceTypes();
+//                if (testTypes.contains("food")) {
+//                    type = "food";
+//                } else if (testTypes.contains("museum")) {
+//                    type = "museum";
+//                } else {
+//                    type = "Undefined";
+//                }
 
                 pinSelectedMarker(loc);
 
@@ -152,11 +168,28 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 String paddress = place.getAddress();
                 double lati = loc.latitude;
                 double longit = loc.longitude;
-                String type = "Undefined";
                 String pPhone = place.getPhoneNumber();
 
 
-                savePlaceToDatabase(pid, pname, paddress, lati, longit, type, pPhone);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("places_from_api").whereEqualTo("PlaceID", pid);
+
+                query.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Αν η λίστα δεν είναι κενή, υπάρχει ήδη εγγραφή με αυτό το placeId
+                        if (!task.getResult().isEmpty()) {
+                            // Εδώ μπορείτε να το αντιμετωπίσετε όπως εσείς θέλετε
+                            // Π.χ., εμφανίστε ένα μήνυμα λάθους, εκτελέστε κάποια ενέργεια, κ.λπ.
+                            Toast.makeText(getApplicationContext(), "This placeId already exists into the database", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Δεν υπάρχει εγγραφή με αυτό το placeId, θα κάνει προσθήκη της εγγραφής
+                            savePlaceToDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+                        }
+                    } else {
+                        // Αν υπάρξει σφάλμα κατά την εκτέλεση του ερωτήματος
+                        Toast.makeText(getApplicationContext(), "An error occurred with this placeId.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });
@@ -332,13 +365,14 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     // =======================  SAVE PLACE TO DATABASE  =====================================
 
-    private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, String type, String pPhone){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone){
+
+
 
         String placeid = pid;
         String name = pname;
         String address = paddress;
-        String types = type;
+        List<String> types = type;
         String phone = pPhone;
         double latitude = lati;
         double longitude = longit;
@@ -360,7 +394,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         places.put("Type", types);
         places.put("Phone", phone);
 
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
