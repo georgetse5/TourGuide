@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -30,6 +31,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -38,6 +40,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
@@ -52,9 +56,15 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -66,8 +76,12 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     public LatLng lat ;
     public LatLng longi;
     private LatLng currentloc;
+//    private LatLng testingCurrentLocation = new LatLng(41.09113937409494, 23.550021265102966);
     private LatLng testing = new LatLng(41.084666328,23.543164494);
+
+    public String placeName;
     private String query;
+
 
 
     @Override
@@ -87,6 +101,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             public void onLocationChanged(Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
+                System.out.println("onLocationChanged called!!!");
                 // Use the location data as needed
             }
 
@@ -105,6 +120,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 // Handle when the location provider is disabled
             }
         };
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -115,9 +131,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
         AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER,Place.Field.TYPES));
+ 
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.PLUS_CODE, Place.Field.PHONE_NUMBER, Place.Field.TYPES));
         autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
-        //autocompleteSupportFragment.setLocationRestriction(RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915)));
+
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
@@ -130,9 +147,62 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
 
 
+                List<String> testTypes;
+                String type = "";
+
+                placeName = place.getName();
+                System.out.println("Name: " + placeName);
+                System.out.println("Address: " + place.getAddress());
+                LatLng loc = place.getLatLng();
+                System.out.println("Lat_Lng: " + place.getLatLng());
+                System.out.println("Plus code: " + place.getPlusCode());
+                System.out.println("Types: " + place.getPlaceTypes());
+
+//                String targetString = "food";
+                testTypes = place.getPlaceTypes();
+//                if (testTypes.contains("food")) {
+//                    type = "food";
+//                } else if (testTypes.contains("museum")) {
+//                    type = "museum";
+//                } else {
+//                    type = "Undefined";
+//                }
+
+                pinSelectedMarker(loc);
+
+                String pid = place.getId();
+                String pname = place.getName();
+                String paddress = place.getAddress();
+                double lati = loc.latitude;
+                double longit = loc.longitude;
+                String pPhone = place.getPhoneNumber();
+
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("places_from_api").whereEqualTo("PlaceID", pid);
+
+                query.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Αν η λίστα δεν είναι κενή, υπάρχει ήδη εγγραφή με αυτό το placeId
+                        if (!task.getResult().isEmpty()) {
+                            // Εδώ μπορείτε να το αντιμετωπίσετε όπως εσείς θέλετε
+                            // Π.χ., εμφανίστε ένα μήνυμα λάθους, εκτελέστε κάποια ενέργεια, κ.λπ.
+                            Toast.makeText(getApplicationContext(), "This placeId already exists into the database", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Δεν υπάρχει εγγραφή με αυτό το placeId, θα κάνει προσθήκη της εγγραφής
+                            savePlaceToDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+                        }
+                    } else {
+                        // Αν υπάρξει σφάλμα κατά την εκτέλεση του ερωτήματος
+                        Toast.makeText(getApplicationContext(), "An error occurred with this placeId.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
-        List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER,Place.Field.TYPES);
+
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES, Place.Field.LAT_LNG, Place.Field.PLUS_CODE);
+
         // Start the autocomplete intent.
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .build(this);
@@ -140,19 +210,24 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
 
-       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.08524436970851,23.5592267697085),new LatLng(41.0879423302915, 23.5619247302915));
+       RectangularBounds bounds = RectangularBounds.newInstance(new LatLng(41.06104388668157, 23.502687403900623),
+                                                                new LatLng(41.108726881157594, 23.57402786885185));
 
 
        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 // Call either setLocationBias() OR setLocationRestriction().
-                //.setLocationBias(bounds)
-                .setLocationRestriction(bounds)
-                .setOrigin(new LatLng(41.08524436970851,23.5592267697085))
+
+                .setLocationBias(bounds)
+//                .setLocationRestriction(bounds)
+                .setOrigin(currentloc)
+
                 .setCountries("GR")
                 .setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS))
                 .setSessionToken(token)
                 .setQuery("Greece")
                 .build();
+
+        System.out.println("Bounds: " + bounds);
 
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
@@ -179,7 +254,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
             MyMap.getUiSettings().setZoomControlsEnabled(true);
 
-            pinLocations(googleMap);
+//            pinLocations(googleMap);
         }
 
     }
@@ -234,6 +309,8 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    // =============================  PIN LOCATIONS  ========================================
+
     private void pinLocations(@NonNull GoogleMap map) {
 
         LatLng test1 = new LatLng(41.074712, 23.553938);
@@ -255,6 +332,22 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         map.addMarker(markerOptions2);
 
     }
+
+    // =========================  PIN SELECTED MARKER  ======================================
+
+    void pinSelectedMarker(LatLng loc) {
+
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(placeName)
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
+        MyMap.addMarker(markerOptions10);
+
+        LatLng markerLatLng = markerOptions10.getPosition();
+        MyMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 20));
+
+    }
+
+    // ==========================  BITMAP DESCRIPTOR  =======================================
 
     private BitmapDescriptor bitmapDescriptor(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
@@ -282,6 +375,53 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 }
             });
 
+    // =======================  SAVE PLACE TO DATABASE  =====================================
+
+    private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone){
+
+
+
+        String placeid = pid;
+        String name = pname;
+        String address = paddress;
+        List<String> types = type;
+        String phone = pPhone;
+        double latitude = lati;
+        double longitude = longit;
+
+//        placeid = "fhHDJ3jFKJh45lf1ka";
+//        name = "testPlace";
+//        address = "Merarxias";
+//        latitude = 41.09114892507394;
+//        longitude = 23.549864919543243;
+//        types= "Food";
+//        phone = "2321011111";
+
+        Map<String, Object> places = new HashMap<>();
+        places.put("PlaceID", placeid);
+        places.put("Name", name);
+        places.put("Address", address);
+        places.put("Latitude", latitude);
+        places.put("Longitude", longitude);
+        places.put("Type", types);
+        places.put("Phone", phone);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // ==========================  GET LOCATION  ============================================
+
       private void getLocation() {
         if (checkPermissions()) {
 
@@ -304,6 +444,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                             requestNewLocationData();
                         } else {
                             currentloc = new LatLng(location.getLatitude(),location.getLongitude());
+                            System.out.println(currentloc);
                         }
                     }
                 });
@@ -317,21 +458,29 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         }
 
 
+    // ==========================  REQUEST PERMISSION  ======================================
+
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
     }
 
+    // ==========================  CHECK PERMISSIONS  =======================================
+
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    // ==========================  IS LOCATION ENABLED  =====================================
+
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
+
+    // =========================  REQUEST NEW LOCATION DATA  ================================
 
      private void requestNewLocationData() {
 
@@ -359,8 +508,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
-    private LocationCallback mLocationCallback = new LocationCallback() {
+    // ===========================  LOCATION CALL BACK  =====================================
 
+    private LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();

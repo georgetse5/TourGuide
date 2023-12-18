@@ -1,5 +1,9 @@
 package com.example.tourguide;
 
+
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +34,6 @@ public class ActivityThree extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_two);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
@@ -54,6 +57,7 @@ public class ActivityThree extends AppCompatActivity {
 
 
         recyclerView.setAdapter(new MyAdapter(this, items));
+
 
     }
 
