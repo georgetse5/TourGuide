@@ -281,7 +281,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                             Log.e(TAG, "Exception: %s", task.getException());
                             map.moveCamera(CameraUpdateFactory
                                     .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
-                            map.getUiSetings().setMyLocationButtonEnabled(false);
+                            map.getUiSettings().setMyLocationButtonEnabled(false);
 
 
                         }
