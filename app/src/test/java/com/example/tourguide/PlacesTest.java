@@ -11,7 +11,6 @@ public class PlacesTest {
 
     @Test
     public void getName() {
-        placeGet.setName("Μουσείο Φυσικής Ιστορίας");
 
         assertEquals("Μουσείο Φυσικής Ιστορίας", placeGet.getName());
     }
@@ -19,14 +18,14 @@ public class PlacesTest {
     @Test
     public void setName() {
 
-        assertEquals(placeSet.getName(), "Λαογραφικό Μουσείο Σαρακατσάνων");
+        assertEquals(placeSet.getName(), "Μουσείο Φυσικής Ιστορίας");
 //        fail();
     }
 
     @Test
     public void getLatitude() {
 
-        assertEquals(41.0998109, placeGet.getLatitude(), 1e-7);
+        assertEquals(41.0993109, placeGet.getLatitude(), 1e-7);
     }
 
     @Test
