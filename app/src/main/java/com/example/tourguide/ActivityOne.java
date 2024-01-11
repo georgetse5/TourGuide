@@ -57,6 +57,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -177,26 +178,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 double longit = loc.longitude;
                 String pPhone = place.getPhoneNumber();
 
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                Query query = db.collection("places_from_api").whereEqualTo("PlaceID", pid);
-
-                query.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Αν η λίστα δεν είναι κενή, υπάρχει ήδη εγγραφή με αυτό το placeId
-                        if (!task.getResult().isEmpty()) {
-                            // Εδώ μπορείτε να το αντιμετωπίσετε όπως εσείς θέλετε
-                            // Π.χ., εμφανίστε ένα μήνυμα λάθους, εκτελέστε κάποια ενέργεια, κ.λπ.
-                            Toast.makeText(getApplicationContext(), "This placeId already exists into the database", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Δεν υπάρχει εγγραφή με αυτό το placeId, θα κάνει προσθήκη της εγγραφής
-                            savePlaceToDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
-                        }
-                    } else {
-                        // Αν υπάρξει σφάλμα κατά την εκτέλεση του ερωτήματος
-                        Toast.makeText(getApplicationContext(), "An error occurred with this placeId.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                checksForDoublesOnDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
 
             }
         });
@@ -335,6 +317,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     // =========================  PIN SELECTED MARKER  ======================================
 
+
     void pinSelectedMarker(LatLng loc) {
 
         MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(placeName)
@@ -375,9 +358,31 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 }
             });
 
+    // =======================  CHECK FOR DOUBLES ON THE DATABASE  =================================
+
+
+    void checksForDoublesOnDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> testTypes, String pPhone) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query query = db.collection("places_from_api").whereEqualTo("PlaceID", pid);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (!task.getResult().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "This placeId already exists into the database", Toast.LENGTH_SHORT).show();
+                } else {
+                    savePlaceToDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "An error occurred with this placeId.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
     // =======================  SAVE PLACE TO DATABASE  =====================================
 
-    private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone){
+    void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone) {
 
 
 
