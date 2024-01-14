@@ -84,6 +84,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //    private LatLng testingCurrentLocation = new LatLng(41.09113937409494, 23.550021265102966);
     private LatLng testing = new LatLng(41.084666328,23.543164494);
 
+    // Edw apothikeyontai ta dedomena ths methodou fetchDataFromFirestore()
+    public HashMap<String, Object> dataMap = new HashMap<>();
+
     public String placeName;
     private String query;
 
@@ -100,6 +103,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         Places.initialize(getApplicationContext(),"AIzaSyAWo9aSdWkspvZMFeeWMU7WKRhPNCyPqxY");
         PlacesClient placesClient = Places.createClient(this);
 
+        fetchDataFromFirestore();
 
         locationListener = new LocationListener() {
             @Override
@@ -456,13 +460,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                     // Τα αποτελέσματα του query είναι εδώ
                     QuerySnapshot querySnapshot = task.getResult();
 
-                    // Δημιούργησε ένα HashMap για να αποθηκεύσεις τα δεδομένα
-                    HashMap<String, Object> dataMap = new HashMap<>();
-
+                    int count = 1;
                     for (QueryDocumentSnapshot document : querySnapshot) {
                         String documentId = document.getId();
 
-                        // Λάβετε τα δεδομένα από το κάθε έγγραφο
                         String placeid = document.getString("PlaceID");
                         String name = document.getString("Name");
                         String address = document.getString("Address");
@@ -470,6 +471,11 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                         String phone = document.getString("Phone");
                         double latitude = document.getDouble("Latitude");
                         double longitude = document.getDouble("Longitude");
+
+                        System.out.println("\nRep: " + count);
+                        System.out.println("Name: " + name);
+                        System.out.println("Lat: " + latitude);
+                        count = count + 1;
 
                         // Dhmioyrgei ena neo HashMap gia kathe eggrafo
                         HashMap<String, Object> placeData = new HashMap<>();
