@@ -173,11 +173,14 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //                    type = "Undefined";
 //                }
 
-                pinSelectedMarker(loc);
+                String paddress = place.getAddress();
+
+                if (addressContainsSerres(paddress)) {
+                    pinSelectedMarker(loc);
+                }
 
                 String pid = place.getId();
                 String pname = place.getName();
-                String paddress = place.getAddress();
                 double lati = loc.latitude;
                 double longit = loc.longitude;
                 String pPhone = place.getPhoneNumber();
@@ -364,6 +367,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
+    // ==========================  AUTOCOMPLETE  =======================================
+
 
     private final ActivityResultLauncher<Intent> startAutocomplete = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
