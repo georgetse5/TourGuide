@@ -379,15 +379,15 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone){
 
+        if (addressContainsSerres(paddress)) {
 
-
-        String placeid = pid;
-        String name = pname;
-        String address = paddress;
-        List<String> types = type;
-        String phone = pPhone;
-        double latitude = lati;
-        double longitude = longit;
+            String placeid = pid;
+            String name = pname;
+            String address = paddress;
+            List<String> types = type;
+            String phone = pPhone;
+            double latitude = lati;
+            double longitude = longit;
 
 //        placeid = "fhHDJ3jFKJh45lf1ka";
 //        name = "testPlace";
@@ -397,28 +397,37 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //        types= "Food";
 //        phone = "2321011111";
 
-        Map<String, Object> places = new HashMap<>();
-        places.put("PlaceID", placeid);
-        places.put("Name", name);
-        places.put("Address", address);
-        places.put("Latitude", latitude);
-        places.put("Longitude", longitude);
-        places.put("Type", types);
-        places.put("Phone", phone);
+            Map<String, Object> places = new HashMap<>();
+            places.put("PlaceID", placeid);
+            places.put("Name", name);
+            places.put("Address", address);
+            places.put("Latitude", latitude);
+            places.put("Longitude", longitude);
+            places.put("Type", types);
+            places.put("Phone", phone);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
-            }
-        });
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
     }
+
+
+    private boolean addressContainsSerres(String address) {
+        return address.contains("Σέρρες") || address.contains("Serres") && address.contains("Greece");
+    }
+
+
 
     // ==========================  GET LOCATION  ============================================
 
