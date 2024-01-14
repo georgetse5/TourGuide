@@ -56,15 +56,20 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -422,11 +427,63 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    // ==========================  CHECKS FOR THE CITY  ======================================
 
     private boolean addressContainsSerres(String address) {
         return address.contains("Σέρρες") || address.contains("Serres") && address.contains("Greece");
     }
 
+
+    // ==========================  FETCH DATA FROM THE DATABASE  =============================
+
+
+    private void fetchDataFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference placesCollection = db.collection("places_from_api");
+
+        Task<QuerySnapshot> queryTask = placesCollection.get();
+        queryTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Τα αποτελέσματα του query είναι εδώ
+                    QuerySnapshot querySnapshot = task.getResult();
+
+                    // Δημιούργησε ένα HashMap για να αποθηκεύσεις τα δεδομένα
+                    HashMap<String, Object> dataMap = new HashMap<>();
+
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        String documentId = document.getId();
+
+                        // Λάβετε τα δεδομένα από το κάθε έγγραφο
+                        String placeid = document.getString("PlaceID");
+                        String name = document.getString("Name");
+                        String address = document.getString("Address");
+                        List<String> types = (List<String>) document.get("Type");
+                        String phone = document.getString("Phone");
+                        double latitude = document.getDouble("Latitude");
+                        double longitude = document.getDouble("Longitude");
+
+                        // Dhmioyrgei ena neo HashMap gia kathe eggrafo
+                        HashMap<String, Object> placeData = new HashMap<>();
+                        placeData.put("PlaceID", placeid);
+                        placeData.put("Name", name);
+                        placeData.put("Address", address);
+                        placeData.put("Latitude", latitude);
+                        placeData.put("Longitude", longitude);
+                        placeData.put("Type", types);
+                        placeData.put("Phone", phone);
+
+                        // Apothikeyei ta dedomena me kleidi to documentID
+                        dataMap.put(documentId, placeData);
+
+                    }
+                } else {
+                    System.out.println("Something gone wrong with data download");
+                }
+            }
+        });
+    }
 
 
     // ==========================  GET LOCATION  ============================================
