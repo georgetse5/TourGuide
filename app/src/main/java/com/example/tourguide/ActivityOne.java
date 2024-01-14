@@ -56,16 +56,21 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -79,6 +84,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     private LatLng currentloc;
 //    private LatLng testingCurrentLocation = new LatLng(41.09113937409494, 23.550021265102966);
     private LatLng testing = new LatLng(41.084666328,23.543164494);
+
+    // Edw apothikeyontai ta dedomena ths methodou fetchDataFromFirestore()
+    public HashMap<String, Object> dataMap = new HashMap<>();
 
     public String placeName;
     private String query;
@@ -96,6 +104,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         Places.initialize(getApplicationContext(),"AIzaSyAWo9aSdWkspvZMFeeWMU7WKRhPNCyPqxY");
         PlacesClient placesClient = Places.createClient(this);
 
+        fetchDataFromFirestore();
 
         locationListener = new LocationListener() {
             @Override
@@ -169,11 +178,14 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //                    type = "Undefined";
 //                }
 
-                pinSelectedMarker(loc);
+                String paddress = place.getAddress();
+
+                if (addressContainsSerres(paddress)) {
+                    pinSelectedMarker(loc);
+                }
 
                 String pid = place.getId();
                 String pname = place.getName();
-                String paddress = place.getAddress();
                 double lati = loc.latitude;
                 double longit = loc.longitude;
                 String pPhone = place.getPhoneNumber();
@@ -343,6 +355,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+
+    // ==========================  AUTOCOMPLETE  =======================================
+
+
     private final ActivityResultLauncher<Intent> startAutocomplete = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -384,15 +400,15 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone) {
 
+        if (addressContainsSerres(paddress)) {
 
-
-        String placeid = pid;
-        String name = pname;
-        String address = paddress;
-        List<String> types = type;
-        String phone = pPhone;
-        double latitude = lati;
-        double longitude = longit;
+            String placeid = pid;
+            String name = pname;
+            String address = paddress;
+            List<String> types = type;
+            String phone = pPhone;
+            double latitude = lati;
+            double longitude = longit;
 
 //        placeid = "fhHDJ3jFKJh45lf1ka";
 //        name = "testPlace";
@@ -402,28 +418,91 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //        types= "Food";
 //        phone = "2321011111";
 
-        Map<String, Object> places = new HashMap<>();
-        places.put("PlaceID", placeid);
-        places.put("Name", name);
-        places.put("Address", address);
-        places.put("Latitude", latitude);
-        places.put("Longitude", longitude);
-        places.put("Type", types);
-        places.put("Phone", phone);
+            Map<String, Object> places = new HashMap<>();
+            places.put("PlaceID", placeid);
+            places.put("Name", name);
+            places.put("Address", address);
+            places.put("Latitude", latitude);
+            places.put("Longitude", longitude);
+            places.put("Type", types);
+            places.put("Phone", phone);
 
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+    }
+
+    // ==========================  CHECKS FOR THE CITY  ======================================
+
+    private boolean addressContainsSerres(String address) {
+        return address.contains("Σέρρες") || address.contains("Serres") && address.contains("Greece");
+    }
+
+
+    // ==========================  FETCH DATA FROM THE DATABASE  =============================
+
+
+    private void fetchDataFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("places_from_api").add(places).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        CollectionReference placesCollection = db.collection("places_from_api");
+
+        Task<QuerySnapshot> queryTask = placesCollection.get();
+        queryTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Failure", Toast.LENGTH_SHORT).show();
+            public void onComplete(Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Τα αποτελέσματα του query είναι εδώ
+                    QuerySnapshot querySnapshot = task.getResult();
+
+                    int count = 1;
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        String documentId = document.getId();
+
+                        String placeid = document.getString("PlaceID");
+                        String name = document.getString("Name");
+                        String address = document.getString("Address");
+                        List<String> types = (List<String>) document.get("Type");
+                        String phone = document.getString("Phone");
+                        double latitude = document.getDouble("Latitude");
+                        double longitude = document.getDouble("Longitude");
+
+                        System.out.println("\nRep: " + count);
+                        System.out.println("Name: " + name);
+                        System.out.println("Lat: " + latitude);
+                        count = count + 1;
+
+                        // Dhmioyrgei ena neo HashMap gia kathe eggrafo
+                        HashMap<String, Object> placeData = new HashMap<>();
+                        placeData.put("PlaceID", placeid);
+                        placeData.put("Name", name);
+                        placeData.put("Address", address);
+                        placeData.put("Latitude", latitude);
+                        placeData.put("Longitude", longitude);
+                        placeData.put("Type", types);
+                        placeData.put("Phone", phone);
+
+                        // Apothikeyei ta dedomena me kleidi to documentID
+                        dataMap.put(documentId, placeData);
+
+                    }
+                } else {
+                    System.out.println("Something gone wrong with data download");
+                }
             }
         });
     }
+
 
     // ==========================  GET LOCATION  ============================================
 
