@@ -178,16 +178,15 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //                }
 
                 String paddress = place.getAddress();
-
-                if (addressContainsSerres(paddress)) {
-                    pinSelectedMarker(loc);
-                }
-
                 String pid = place.getId();
                 String pname = place.getName();
                 double lati = loc.latitude;
                 double longit = loc.longitude;
                 String pPhone = place.getPhoneNumber();
+
+                if (addressContainsSerres(paddress)) {
+                    pinSelectedMarker(loc, pname);
+                }
 
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -347,9 +346,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     // =========================  PIN SELECTED MARKER  ======================================
 
-    void pinSelectedMarker(LatLng loc) {
+    void pinSelectedMarker(LatLng loc, String name) {
 
-        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(placeName)
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(name)
                 .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
 
         MyMap.addMarker(markerOptions10);
@@ -358,6 +357,80 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
         MyMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 20));
 
     }
+
+
+    // =========================  PIN FETCHED LOCATIONS  ======================================
+
+
+//    void pinFetchedLocations(HashMap<String, Object> dataMap) {
+//
+//        System.out.println("pinFetchedLoacations called");
+//        int size = dataMap.size();
+//        System.out.println("dataMap size: " + size);
+//
+//        for (int entry=1; entry<=size; entry++) {
+//            entry = (int) dataMap.get("Entry");
+//            System.out.println("DataMap entry: " + entry);
+//
+//            String placeName = (String) dataMap.get("Name");
+//            double latitude = (double) dataMap.get("Latitude");
+//            double longitude = (double) dataMap.get("Longitude");
+//
+//            System.out.println(placeName);
+//
+//
+//            LatLng loc = new LatLng(latitude, longitude);
+//            System.out.println(loc);
+//
+//            MarkerOptions markerOptions = new MarkerOptions()
+//                    .position(loc)
+//                    .title(placeName)
+//                    .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+//
+//            MyMap.addMarker(markerOptions);
+//
+//        }
+//    }
+
+
+//    void pinFetchedLocations(HashMap<String, Object> dataMap) {
+//        System.out.println("pinFetchedLocations called");
+//
+//        for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
+//            String documentId = entry.getKey();
+//            Map<String, Object> documentData = (Map<String, Object>) entry.getValue();
+//
+//            int entryNumber = (int) documentData.get("Entry");
+//            System.out.println("DataMap Entry: " + entryNumber);
+//
+//            String placeName = (String) documentData.get("Name");
+//            double latitude = (double) documentData.get("Latitude");
+//            double longitude = (double) documentData.get("Longitude");
+//
+//            System.out.println("Name: " + placeName);
+//
+//            LatLng loc = new LatLng(latitude, longitude);
+//            System.out.println("Location: " + loc);
+//
+//            MarkerOptions markerOptions = new MarkerOptions()
+//                    .position(loc)
+//                    .title(placeName)
+//                    .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+//
+//            MyMap.addMarker(markerOptions);
+//        }
+//    }
+
+
+    void pinFetchedLocations(LatLng loc, String name) {
+
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(name)
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
+        MyMap.addMarker(markerOptions10);
+
+    }
+
 
     // ==========================  BITMAP DESCRIPTOR  =======================================
 
@@ -471,8 +544,19 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                         String phone = document.getString("Phone");
                         double latitude = document.getDouble("Latitude");
                         double longitude = document.getDouble("Longitude");
+                        int entry = count;
 
-                        System.out.println("\nRep: " + count);
+//                        List<String> placesNames = new ArrayList<>();
+//                        List<Double> placesLats = new ArrayList<>();
+//                        List<Double> placesLong = new ArrayList<>();
+//                        placesNames.add(name);
+//                        placesLats.add(latitude);
+//                        placesLong.add(longitude);
+                        LatLng loc = new LatLng(latitude, longitude);
+                        pinFetchedLocations(loc, name);
+
+
+                        System.out.println("\nEntry: " + count);
                         System.out.println("Name: " + name);
                         System.out.println("Lat: " + latitude);
                         count = count + 1;
@@ -486,6 +570,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                         placeData.put("Longitude", longitude);
                         placeData.put("Type", types);
                         placeData.put("Phone", phone);
+                        placeData.put("Entry", entry);
 
                         // Apothikeyei ta dedomena me kleidi to documentID
                         dataMap.put(documentId, placeData);
