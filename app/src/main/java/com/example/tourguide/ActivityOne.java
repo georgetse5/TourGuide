@@ -179,22 +179,44 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 //                }
 
                 String paddress = place.getAddress();
-
-                if (addressContainsSerres(paddress)) {
-                    pinSelectedMarker(loc);
-                }
-
                 String pid = place.getId();
                 String pname = place.getName();
                 double lati = loc.latitude;
                 double longit = loc.longitude;
                 String pPhone = place.getPhoneNumber();
-
+              
                 checksForDoublesOnDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+
+
+                if (addressContainsSerres(paddress)) {
+                    pinSelectedMarker(loc, pname);
+                }
+
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Query query = db.collection("places_from_api").whereEqualTo("PlaceID", pid);
+
+                query.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Αν η λίστα δεν είναι κενή, υπάρχει ήδη εγγραφή με αυτό το placeId
+                        if (!task.getResult().isEmpty()) {
+                            // Εδώ μπορείτε να το αντιμετωπίσετε όπως εσείς θέλετε
+                            // Π.χ., εμφανίστε ένα μήνυμα λάθους, εκτελέστε κάποια ενέργεια, κ.λπ.
+                            Toast.makeText(getApplicationContext(), "This placeId already exists into the database", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Δεν υπάρχει εγγραφή με αυτό το placeId, θα κάνει προσθήκη της εγγραφής
+                            savePlaceToDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+                        }
+                    } else {
+                        // Αν υπάρξει σφάλμα κατά την εκτέλεση του ερωτήματος
+                        Toast.makeText(getApplicationContext(), "An error occurred with this placeId.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });
 
+      
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES, Place.Field.LAT_LNG, Place.Field.PLUS_CODE);
 
         // Start the autocomplete intent.
@@ -330,9 +352,10 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     // =========================  PIN SELECTED MARKER  ======================================
 
 
-    void pinSelectedMarker(LatLng loc) {
+    void pinSelectedMarker(LatLng loc, String name) {
 
-        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(placeName)
+
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(name)
                 .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
 
         MyMap.addMarker(markerOptions10);
@@ -342,8 +365,24 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+
+    // =========================  PIN FETCHED LOCATIONS  ======================================
+
+
+
+    void pinFetchedLocations(LatLng loc, String name) {
+
+        MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(name)
+                .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
+
+        MyMap.addMarker(markerOptions10);
+
+    }
+
+
     // ==========================  BITMAP DESCRIPTOR  =======================================
 
+  
     private BitmapDescriptor bitmapDescriptor(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -476,8 +515,19 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                         String phone = document.getString("Phone");
                         double latitude = document.getDouble("Latitude");
                         double longitude = document.getDouble("Longitude");
+                        int entry = count;
 
-                        System.out.println("\nRep: " + count);
+//                        List<String> placesNames = new ArrayList<>();
+//                        List<Double> placesLats = new ArrayList<>();
+//                        List<Double> placesLong = new ArrayList<>();
+//                        placesNames.add(name);
+//                        placesLats.add(latitude);
+//                        placesLong.add(longitude);
+                        LatLng loc = new LatLng(latitude, longitude);
+                        pinFetchedLocations(loc, name);
+
+
+                        System.out.println("\nEntry: " + count);
                         System.out.println("Name: " + name);
                         System.out.println("Lat: " + latitude);
                         count = count + 1;
@@ -491,6 +541,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                         placeData.put("Longitude", longitude);
                         placeData.put("Type", types);
                         placeData.put("Phone", phone);
+                        placeData.put("Entry", entry);
 
                         // Apothikeyei ta dedomena me kleidi to documentID
                         dataMap.put(documentId, placeData);
