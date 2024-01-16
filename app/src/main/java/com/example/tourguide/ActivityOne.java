@@ -58,6 +58,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -183,6 +184,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 double lati = loc.latitude;
                 double longit = loc.longitude;
                 String pPhone = place.getPhoneNumber();
+              
+                checksForDoublesOnDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+
 
                 if (addressContainsSerres(paddress)) {
                     pinSelectedMarker(loc, pname);
@@ -212,6 +216,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+      
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHONE_NUMBER, Place.Field.TYPES, Place.Field.LAT_LNG, Place.Field.PLUS_CODE);
 
         // Start the autocomplete intent.
@@ -346,7 +351,9 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     // =========================  PIN SELECTED MARKER  ======================================
 
+
     void pinSelectedMarker(LatLng loc, String name) {
+
 
         MarkerOptions markerOptions10 = new MarkerOptions().position(loc).title(name)
                 .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
@@ -362,65 +369,6 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
     // =========================  PIN FETCHED LOCATIONS  ======================================
 
 
-//    void pinFetchedLocations(HashMap<String, Object> dataMap) {
-//
-//        System.out.println("pinFetchedLoacations called");
-//        int size = dataMap.size();
-//        System.out.println("dataMap size: " + size);
-//
-//        for (int entry=1; entry<=size; entry++) {
-//            entry = (int) dataMap.get("Entry");
-//            System.out.println("DataMap entry: " + entry);
-//
-//            String placeName = (String) dataMap.get("Name");
-//            double latitude = (double) dataMap.get("Latitude");
-//            double longitude = (double) dataMap.get("Longitude");
-//
-//            System.out.println(placeName);
-//
-//
-//            LatLng loc = new LatLng(latitude, longitude);
-//            System.out.println(loc);
-//
-//            MarkerOptions markerOptions = new MarkerOptions()
-//                    .position(loc)
-//                    .title(placeName)
-//                    .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
-//
-//            MyMap.addMarker(markerOptions);
-//
-//        }
-//    }
-
-
-//    void pinFetchedLocations(HashMap<String, Object> dataMap) {
-//        System.out.println("pinFetchedLocations called");
-//
-//        for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-//            String documentId = entry.getKey();
-//            Map<String, Object> documentData = (Map<String, Object>) entry.getValue();
-//
-//            int entryNumber = (int) documentData.get("Entry");
-//            System.out.println("DataMap Entry: " + entryNumber);
-//
-//            String placeName = (String) documentData.get("Name");
-//            double latitude = (double) documentData.get("Latitude");
-//            double longitude = (double) documentData.get("Longitude");
-//
-//            System.out.println("Name: " + placeName);
-//
-//            LatLng loc = new LatLng(latitude, longitude);
-//            System.out.println("Location: " + loc);
-//
-//            MarkerOptions markerOptions = new MarkerOptions()
-//                    .position(loc)
-//                    .title(placeName)
-//                    .icon(bitmapDescriptor(getApplicationContext(), R.drawable.baseline_place_24));
-//
-//            MyMap.addMarker(markerOptions);
-//        }
-//    }
-
 
     void pinFetchedLocations(LatLng loc, String name) {
 
@@ -434,6 +382,7 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
 
     // ==========================  BITMAP DESCRIPTOR  =======================================
 
+  
     private BitmapDescriptor bitmapDescriptor(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -464,9 +413,31 @@ public class ActivityOne extends AppCompatActivity implements OnMapReadyCallback
                 }
             });
 
+    // =======================  CHECK FOR DOUBLES ON THE DATABASE  =================================
+
+
+    void checksForDoublesOnDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> testTypes, String pPhone) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query query = db.collection("places_from_api").whereEqualTo("PlaceID", pid);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (!task.getResult().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "This placeId already exists into the database", Toast.LENGTH_SHORT).show();
+                } else {
+                    savePlaceToDatabase(pid, pname, paddress, lati, longit, testTypes, pPhone);
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "An error occurred with this placeId.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
     // =======================  SAVE PLACE TO DATABASE  =====================================
 
-    private void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone){
+    void savePlaceToDatabase(String pid, String pname, String paddress, double lati, double longit, List<String> type, String pPhone) {
 
         if (addressContainsSerres(paddress)) {
 
